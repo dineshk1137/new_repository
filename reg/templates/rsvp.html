@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-3">
+    <h2>RSVP for {{ event.title }}</h2>
+
+    {% if user.is_authenticated %}
+        {% if user in event.rsvp_users.all %}
+            <p>You have already RSVP'd to this event.</p>
+        {% else %}
+            <form method="post" action="{% url 'RSVP' pk=event.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">RSVP</button>
+            </form>
+        {% endif %}
+    {% else %}
+        <p>You must be logged in to RSVP.</p>
+    {% endif %}
+</div>
+{% endblock %}

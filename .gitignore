@@ -1,0 +1,9 @@
+# Ignore Python bytecode cache
+eprj/__pycache__/
+reg/__pycache__/
+
+# Ignore Django migration files
+reg/migrations/
+
+# Ignore database file
+db.sqlite3

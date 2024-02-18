@@ -1,0 +1,91 @@
+{% extends "base.html" %} 
+{% block content %}
+<div class="container">
+  {% if user.is_authenticated %}
+    <h1><strong>Events</strong></h1>
+
+    
+    <div class="mb-3">
+      <form action="{% url 'search_events' %}" method="get">
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search events"
+            name="q"
+          />
+          <div class="input-group-append">
+            <button type="submit" class="btn btn-primary">Search</button>
+          </div>
+          <div class="input-group-append">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Sort by time
+            </button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="?sort=asc">Ascending</a>
+              <a class="dropdown-item" href="?sort=desc">Descending</a>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <table class="table table-hover table-bordered">
+      <thead class="table-dark">
+        <tr>
+          {% comment %} <th scope="col">ID</th> {% endcomment %}
+          <th scope="col">Event Name</th>
+          <th scope="col">Address</th>
+          <th scope="col">Time</th>
+          <th scope="col">Date</th>
+          <th scope="col">Created By</th>
+          <th scope="col">Created At</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if events %}
+          {% for event in events %}
+            <tr onclick="window.location='{% url 'events' event.id %}';">
+              {% comment %} <td>{{ event.id }}</td> {% endcomment %}
+              <td><strong>{{ event.title }}</strong></td>
+              <td>{{ event.address }}</td>
+              <td>{{ event.time }}</td>
+              <td>{{ event.date }}</td>
+              <td>{{ event.first_name }} {{ event.last_name }}</td>
+              <td>{{ event.created_at }}</td>
+            </tr>
+          {% endfor %}
+        {% endif %}
+      </tbody>
+    </table>
+
+  {% else %}
+    <div class="col-md-6 offset-md-3">
+      <h1>Login</h1>
+
+      <form action="{% url 'home' %}" method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <input
+            type="text"
+            class="form-control"
+            name="username"
+            placeholder="User-Name"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <input
+            type="password"
+            class="form-control"
+            name="password"
+            placeholder="Password"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-secondary">Login</button>
+      </form>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

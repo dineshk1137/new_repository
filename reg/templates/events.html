@@ -1,0 +1,54 @@
+{% extends "base.html" %} 
+{% block content %}
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="mb-0">{{ events.title }}</h3>
+    </div>
+    <div class="card-body">
+      <p class="card-text">
+        <strong>Location:</strong> {{ events.address }}
+      </p>
+      <p class="card-text">
+        <strong>Event Timing and Date:</strong> {{ events.time|time:"H:i" }} {{ events.date|date:"F d, Y" }}
+      </p>
+      <p class="card-text">
+        <strong>Description:</strong> {{ events.description }}
+      </p>
+      <p class="card-text">
+        <strong>Created by:</strong> {{ events.user.username }}, on {{ events.created_at }}
+      </p>
+      
+      {% if user.is_authenticated %}
+        {% if user == events.user or user.is_superuser %}
+          <div class="alert alert-success" role="alert">
+            You have RSVP'd to this event.
+          </div>
+
+          <h5>People who have RSVP'd:</h5>
+          <ul class="list-group">
+            {% for rsvp_user in events.rsvp_users.all %}
+              <li class="list-group-item">{{ rsvp_user.username }}</li>
+            {% endfor %}
+          </ul>
+        {% elif user in events.rsvp_users.all %}
+          <div class="alert alert-info" role="alert">
+            You have already RSVP'd to this event.
+          </div>
+        {% else %}
+          <a href="{% url 'RSVP' events.id %}" class="btn btn-success">RSVP</a>
+        {% endif %}
+      {% else %}
+        <div class="alert alert-warning" role="alert">
+          You must be logged in to RSVP.
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  <a href="{% url 'home' %}" class="btn btn-primary mt-3">Go Back</a>
+  {% if user == events.user or user.is_superuser %}
+  <a href="{% url 'delete_events' events.id %}" class="btn btn-danger mt-3">Delete</a>
+  <a href="{% url 'update_event' events.id %}" class="btn btn-warning mt-3">Update Event Details</a>
+  {% endif %}
+</div>
+{% endblock %}
