@@ -32,8 +32,6 @@ def home(request):
     else:
         return render (request, 'home.html', {'events':events})
     
-    
-
 def logout_user(request):
     logout(request)
     messages.success(request, 'u have been logged out')
@@ -54,8 +52,6 @@ def reg_user(request):
     else:
         form = SignUpForm()
         return render (request, 'register.html', {'form':form})
-    
-    return render (request, 'register.html', {'form':form})
 
 def events(request, pk):
     if request.user.is_authenticated:

@@ -1,6 +1,5 @@
 from . import views
 from django.urls import path
-# from .views import reverse_rsvp
 
 urlpatterns = [
     path('',views.home, name='home' ),
@@ -12,5 +11,4 @@ urlpatterns = [
     path('add_event',views.add_event, name='add_event'),
     path('RSVP/<int:pk>',views.RSVP, name='RSVP'),
     path('search/', views.search_events, name='search_events'),
-    # path('reverse_rsvp/<int:pk>', reverse_rsvp, name='reverse_rsvp'),
 ]

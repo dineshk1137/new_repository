@@ -1,4 +1,3 @@
-# from typing import Any
 from django import forms
 from .models import Rec
 from django.contrib.auth.forms import UserCreationForm
@@ -29,15 +28,13 @@ class SignUpForm(UserCreationForm):
         self.fields['password2'].widget.attrs['placeholder'] = 'Confirm Password'
         self.fields['password2'].label = ''
 
-
-
 class AddEventForm(forms.ModelForm):
     title  = forms.CharField(required=True,label='', max_length='50', widget=forms.widgets.TextInput(attrs={'class':'form-control','placeholder':'Event Name'}))
     # first_name  = forms.CharField(required=False,label='', max_length='50', widget=forms.widgets.TextInput(attrs={'class':'form-control','placeholder':'first Name'}))
     # last_name = forms.CharField(required=False,label='', max_length='50', widget=forms.widgets.TextInput(attrs={'class':'form-control','placeholder':'Last Name'}))
     address = forms.CharField(required=True,label='', max_length='50', widget=forms.widgets.TextInput(attrs={'class':'form-control','placeholder':'location'}))
-    time = forms.TimeField(required=True,label='', widget=forms.widgets.TextInput(attrs={'class':'form-control','placeholder':'time'}))
-    date = forms.DateField(required=True,label='', widget=forms.widgets.TextInput(attrs={'class':'form-control','placeholder':'date of Event'}))
+    time = forms.TimeField(required=True,label='', widget=forms.widgets.TimeInput(attrs={'class':'form-control','placeholder':'time(H:M)'}))
+    date = forms.DateField(required=True,label='', widget=forms.widgets.DateInput(attrs={'class':'form-control','placeholder':'date of Event(YYYY:MM:DD)'}))
     description = forms.CharField(required=True, label='', max_length='255', widget=forms.widgets.Textarea(attrs={'class':'form-control','placeholder':'Event Description'}))
     
     class Meta:
@@ -46,7 +43,7 @@ class AddEventForm(forms.ModelForm):
 
     def save(self, commit=True):
         event = super().save(commit=False)
-        user = self.request.user  # Assuming the request object is available
+        user = self.request.user
 
         if user.is_authenticated:
             event.user = user
@@ -55,9 +52,8 @@ class AddEventForm(forms.ModelForm):
 
         if commit:
             event.save()
-
         return event
     
     def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop('request', None)  # Pop the 'request' parameter from kwargs
+        self.request = kwargs.pop('request', None)
         super(AddEventForm, self).__init__(*args, **kwargs)

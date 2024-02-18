@@ -34,9 +34,9 @@
       <thead class="table-dark">
         <tr>
           {% comment %} <th scope="col">ID</th> {% endcomment %}
+          <th scope="col">Time</th>
           <th scope="col">Event Name</th>
           <th scope="col">Address</th>
-          <th scope="col">Time</th>
           <th scope="col">Date</th>
           <th scope="col">Created By</th>
           <th scope="col">Created At</th>
@@ -47,9 +47,9 @@
           {% for event in events %}
             <tr onclick="window.location='{% url 'events' event.id %}';">
               {% comment %} <td>{{ event.id }}</td> {% endcomment %}
+              <td>{{ event.time }}</td>
               <td><strong>{{ event.title }}</strong></td>
               <td>{{ event.address }}</td>
-              <td>{{ event.time }}</td>
               <td>{{ event.date }}</td>
               <td>{{ event.first_name }} {{ event.last_name }}</td>
               <td>{{ event.created_at }}</td>
